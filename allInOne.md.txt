@@ -1,0 +1,79 @@
+
+
+# All Conversion Point At One Place
+
+
+## Questions To Ponder Upon 
+
+``````
+		int i = 679; //Allowed
+//		int i2 = 889890898908; //CTE: Right Side literal 889890898908 of type int is out of range
+//		int i3 = (int)889890898908; // CTE: Same Reason as above: The literal 889890898908 of type int is out of range 
+
+		int i3 = (int)889890898908L; // Allowed //Here RightSide literal is Long, not int..hence literal is lying in range of long data type=> then
+												// long right hand side value is forcefully demoted type casted to int data type... then demoted data into int is saved in left side variable xyz which is also of type int
+
+//		int i4 = (int)(long)889890898908; // CTE: Same Reason as above: The literal 889890898908 of type int is out of range 
+
+``````
+		
+
+## Reason/Theory Behind This
+
+		While Definiing the Variable:
+		default = 'int' :    = 89;
+		for long L/l	:	= 89l or 89L;
+		
+		default double (d/D can be used) =>  = 89.3 or 89.3d or 89.3D;
+		for float F/f	:	= 89.3f or 89.3F
+
+
+------
+
+
+		0. Execution always takes from "right to left"
+				int f88 = (byte)(long) 78.9; // double->long->byte (demotion) -> int (promotion)
+
+		1. Promotion sbko psand hain
+		2. Demotion kisi ko nahi pasand;... kyonki compiler don't want any data loss
+		- Implicit Demotion not allowed by compiler but we can forcefully can do demotion by Explicit Type Casting
+			 //  double to int //implicit demotion not allowed..as there precision data loss
+			 // similary long to int is not possible implicitely...but we can explicitely type cast and force it to happen
+	
+----
+
+			 
+  There is Exception for Above RULE:   
+			Character to Interger vice-versa conversion : // int to char// 
+  
+  char ch = 65; //implicit demotion is allowed till the point there is no data loss
+  
+  but ==>  char ch = 2838237; //This implicit demotion is not allowed as data loss will happen
+  
+  ....here also we can use Explicit Type Cast
+		
+>>>>	char ch = (char)2838237;  //This is allowed.
+
+
+----
+			
+		3.  --
+		5. double j = 78; //GOOD: Promotion of int to double
+		6. int i6= 56.7;   //BAD: CTE: compiler implictely try to demote saved double in RAM into int
+		7. int i7 = (int)56.7; //GOOD: 56 // Explicitely Type CAsting: Forcing the compiler not to save right hand side value as double, instead save as int in RAM temporary and then assign this temporary int to xyz variable on left side which is of data type int.. overall here==> Then int to int //no change
+		8. long j = 45.7; //CTE:doube(savedinRAM) to long : demotion// pasand nahi aya
+		9. long j = (long)45.7; //GOOD
+		10. long k = (byte)56.7; // forcing not to save as double intead in byte (forcing demotion explicitely)...but from byte to long (promotion of byte--> bale-bale!!!)
+	   
+	    Arithmetic Operation:
+	    11. = int + doube + long /// 
+			==> result = First, typecast all constants/variable into highest DataType (say XYZ data type) among all mentioned in arithmetic operation 
+			==> second do operations (easy to do as all contants are of XYZ type) , 
+			==> third save data in XYZ data type (obvisouly highest among all)
+			
+	    12. => byte + byte = result in byte data type
+	    		//but if result exceeding the byte range, then CTE
+	    		// but to avoid CTE" we can explicietly type cast like 'int =(byte)result' and  force the compiler to save data in byte data type..even though overflow, data loss take place there ==> ORDER is ORDER like a boss
+		13. boolean value can not be type casted into anything.
+	   
+	    
